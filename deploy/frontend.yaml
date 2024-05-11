@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logindeployment
+spec:
+  selector:
+    matchLabels:
+      app: login-front
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: login-front
+    spec:
+      containers:
+      - name: nginx
+        image: frontlogin:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: login-webservice
+spec:
+  selector:
+    app: login-front
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
